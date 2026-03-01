@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="th">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Fingerprint Attendance Prototype</title>
+    <style>
+        :root {
+            --accent: #9ad7d1;
+            --panel: #e5f7f3;
+            --text: #052926;
+            --muted: #475569;
+            --success: #047857;
+            --danger: #dc2626;
+            font-family: "Noto Sans Thai", "Segoe UI", Roboto, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: #f3f6f7;
+            color: var(--text);
+            line-height: 1.45
+        }
+
+        header {
+            background: #ffffffcc;
+            backdrop-filter: blur(4px);
+            padding: 10px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e6eef0
+        }
+
+        .brand {
+            display: flex;
+            gap: 12px;
+            align-items: center
+        }
+
+        .brand h1 {
+            font-size: 18px;
+            margin: 0
+        }
+
+        .role-switch {
+            display: flex;
+            gap: 8px
+        }
+
+        .role-btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            background: transparent;
+            cursor: pointer
+        }
+
+        .role-btn.active {
+            background: var(--accent);
+            color: #00302b;
+            font-weight: 700
+        }
+
+        main {
+            padding: 18px;
+            max-width: 1200px;
+            margin: 18px auto
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 18px
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 6px 18px rgba(10, 20, 30, 0.06)
+        }
+
+        .panel {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.85));
+            padding: 18px;
+            border-radius: 8px
+        }
+
+        .top-summary {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap
+        }
+
+        .stat {
+            flex: 1;
+            min-width: 160px;
+            background: var(--panel);
+            padding: 12px;
+            border-radius: 8px
+        }
+
+        h2 {
+            margin: 0 0 8px 0;
+            font-size: 16px
+        }
+
+        small {
+            color: var(--muted)
+        }
+
+        .btn {
+            background: var(--success);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer
+        }
+
+        .btn.secondary {
+            background: #eef2f2;
+            color: var(--text)
+        }
+
+        .row {
+            display: flex;
+            gap: 12px;
+            align-items: center
+        }
+
+        .form-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px
+        }
+
+        input,
+        select {
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #e3eef0
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px
+        }
+
+        th,
+        td {
+            padding: 8px;
+            border-bottom: 1px solid #eef3f4;
+            text-align: left;
+            font-size: 14px
+        }
+
+        .muted {
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        .chip {
+            display: inline-block;
+            padding: 6px 8px;
+            border-radius: 999px;
+            background: #f1faf7;
+            color: #044b3f;
+            font-weight: 600;
+            font-size: 13px
+        }
+
+        .danger {
+            color: var(--danger);
+            font-weight: 700
+        }
+
+        /* right column: visual */
+        .right-col {
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+
+        .session-card {
+            background: linear-gradient(135deg, #dff3ef, #f2fffc);
+            padding: 12px;
+            border-radius: 10px
+        }
+
+        .center-banner {
+            height: 180px;
+            border-radius: 10px;
+            background-image: url('/mnt/data/bdef4325-72eb-42ba-a2a0-9cde3f7414a7.png');
+            background-size: cover;
+            background-position: center;
+            box-shadow: inset 0 -40px 80px rgba(0, 0, 0, 0.12)
+        }
+
+        .kbd {
+            font-family: monospace;
+            background: #f8fafc;
+            border: 1px solid #eef3f4;
+            padding: 6px 8px;
+            border-radius: 6px
+        }
+
+        /* responsive */
+        @media (max-width:980px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .right-col {
+                order: -1
+            }
+
+            .center-banner {
+                height: 160px
+            }
+        }
+
+        /* modal */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(3, 7, 7, 0.45);
+            display: none;
+            align-items: center;
+            justify-content: center
+        }
+
+        .modal {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            max-width: 560px;
+            width: 100%
+        }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
+
+        .text-muted {
+            color: var(--muted)
+        }
+
+        .table-actions button {
+            margin-right: 6px
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="brand">
+            <div
+                style="width:46px;height:46px;border-radius:8px;background:var(--accent);display:grid;place-items:center">
+                <strong style="color:#00302b">FA</strong>
+            </div>
+            <div>
+                <h1>Fingerprint Attendance System</h1>
+                <small class="text-muted">Prototype — Student / Teacher Web App</small>
+            </div>
+        </div>
+
+        <div style="display:flex;gap:12px;align-items:center">
+            <div class="role-switch" aria-hidden>
+                <button class="role-btn active" id="role-student">Student View</button>
+                <button class="role-btn" id="role-teacher">Teacher View</button>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+                <div class="muted">User: <strong id="current-user">Somchai</strong></div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="grid">
+            <!-- left/main column -->
+            <div>
+                <!-- Student Dashboard -->
+                <section id="student-dashboard" class="card" aria-labelledby="student-title">
+                    <div class="row" style="justify-content:space-between;align-items:flex-start">
+                        <div>
+                            <h2 id="student-title">Student Dashboard</h2>
+                            <small class="muted">สรุปการเข้าเรียนและสถานะลายนิ้วมือของคุณ</small>
+                        </div>
+                        <div style="display:flex;gap:8px">
+                            <button class="btn secondary" onclick="showEnrollmentGuide()">วิธีลงทะเบียน</button>
+                            <button class="btn" onclick="simulateStudentScan()">Simulate Scan</button>
+                        </div>
+                    </div>
+
+                    <div class="top-summary" style="margin-top:12px">
+                        <div class="stat">
+                            <div class="muted">วันนี้เรียน</div>
+                            <div style="font-weight:700;font-size:20px" id="student-today-count">2</div>
+                            <div class="muted">คาบ</div>
+                        </div>
+                        <div class="stat">
+                            <div class="muted">เช็กชื่อล่าสุด</div>
+                            <div style="font-weight:700" id="student-last-att">-</div>
+                            <div class="muted">สถานะ</div>
+                        </div>
+                        <div class="stat">
+                            <div class="muted">Fingerprint Status</div>
+                            <div id="student-fp-status" style="margin-top:6px">
+                                <span class="chip">Not Enrolled</span>
+                            </div>
+                            <div class="muted">Fingerprint ID: <span id="student-fp-id">—</span></div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:14px" class="panel">
+                        <h3 style="margin:0 0 6px 0">Attendance by Subject</h3>
+                        <div class="form-row">
+                            <select id="student-subject-select"></select>
+                            <button class="btn secondary" onclick="renderStudentAttendance()">ดู</button>
+                        </div>
+                        <div id="student-att-table"></div>
+                    </div>
+                </section>
+
+                <!-- Teacher Dashboard -->
+                <section id="teacher-dashboard" class="card" style="display:none" aria-labelledby="teacher-title">
+                    <div class="row" style="justify-content:space-between;align-items:flex-start">
+                        <div>
+                            <h2 id="teacher-title">Teacher Dashboard</h2>
+                            <small class="muted">จัดการนักเรียนและดูรายงานการเข้าเรียน</small>
+                        </div>
+                        <div style="display:flex;gap:8px">
+                            <button class="btn" onclick="openCreateSession()">Create Session</button>
+                            <button class="btn secondary" onclick="simulateScan()">Simulate Scan</button>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:12px">
+                        <div class="top-summary">
+                            <div class="stat">
+                                <div class="muted">Session ปัจจุบัน</div>
+                                <div style="font-weight:700" id="teacher-current-session">No session</div>
+                            </div>
+                            <div class="stat">
+                                <div class="muted">ผู้มาเรียนวันนี้</div>
+                                <div style="font-weight:700" id="teacher-present-count">0</div>
+                            </div>
+                            <div class="stat">
+                                <div class="muted">รวมทั้งหมด</div>
+                                <div style="font-weight:700" id="teacher-total-students">0</div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top:12px" class="panel">
+                            <h3 style="margin:0 0 8px 0">Manage Students</h3>
+                            <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+                                <input id="student-search" placeholder="ค้นหาชื่อนักเรียน" oninput="renderStudents()" />
+                                <button class="btn" onclick="openAddStudent()">+ Add Student</button>
+                            </div>
+                            <div id="students-table"></div>
+                        </div>
+
+                        <div style="margin-top:12px" class="panel">
+                            <h3 style="margin:0 0 8px 0">Attendance by Subject</h3>
+                            <div class="form-row">
+                                <select id="teacher-subject-select" onchange="renderAttendanceBySession()"></select>
+                                <select id="teacher-session-select"></select>
+                                <button class="btn secondary" onclick="renderAttendanceBySession()">Filter</button>
+                            </div>
+                            <div id="attendance-table"></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- right column -->
+            <aside class="right-col">
+                <div class="card">
+                    <h3 style="margin:0 0 8px 0">Current/Preview</h3>
+                    <div class="center-banner" title="preview image"></div>
+                    <div style="margin-top:10px">
+                        <div class="session-card">
+                            <div>
+                                <div style="font-weight:700" id="preview-subject">—</div>
+                                <div class="muted" id="preview-time">—</div>
+                            </div>
+                            <div style="text-align:right">
+                                <div class="muted">Status</div>
+                                <div class="chip" id="preview-status">Idle</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin:0 0 8px 0">Quick Actions</h3>
+                    <div style="display:flex;flex-direction:column;gap:8px">
+                        <button class="btn" onclick="openCreateSession()">Create Session</button>
+                        <button class="btn" onclick="openAddStudent()">Add Student</button>
+                        <button class="btn secondary" onclick="showEnrollmentGuide()">Enrollment Guide</button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- modals -->
+    <div class="modal-backdrop" id="modal-backdrop">
+        <div class="modal" role="dialog" aria-modal="true" id="modal">
+            <!-- content injected via JS -->
+        </div>
+    </div>
+
+    <script>
+        /* ---------------------------
+          Prototype data (in-memory)
+        ----------------------------*/
+        let state = {
+            role: 'student', // or 'teacher'
+            currentUser: { name: 'Somchai', role: 'student', student_id: 101, fingerprint_id: null },
+            users: [],
+            students: [
+                { student_id: 101, name: 'Somchai', class: 'ม.6/1', fingerprint_id: null },
+                { student_id: 102, name: 'Mali', class: 'ม.6/2', fingerprint_id: 7 },
+                { student_id: 103, name: 'Rungnapha', class: 'ม.6/3', fingerprint_id: 12 }
+            ],
+            teachers: [
+                { teacher_id: 201, name: 'Teacher A' }
+            ],
+            subjects: [
+                { subject_id: 1, subject_name: 'Mathematics', teacher_id: 201 },
+                { subject_id: 2, subject_name: 'Physics', teacher_id: 201 }
+            ],
+            sessions: [
+                // sample session (future)
+                // { session_id:501, subject_id:1, teacher_id:201, date:'2025-11-25', start_time:'10:00', end_time:'11:00' }
+            ],
+            attendance: [
+                // { attendance_id:1001, student_id:102, session_id:501, time:'2025-11-17T08:07:40', status:'Present', source_device:'MCU-01' }
+            ],
+            lastAttendanceId: 1000,
+            lastSessionId: 500
+        };
+
+        /* ---------------------------
+          Helper: DOM shortcuts
+        ----------------------------*/
+        const $ = sel => document.querySelector(sel);
+        const $$ = sel => document.querySelectorAll(sel);
+
+        /* ---------------------------
+          Init UI and events
+        ----------------------------*/
+        document.getElementById('role-student').addEventListener('click', () => switchRole('student'));
+        document.getElementById('role-teacher').addEventListener('click', () => switchRole('teacher'));
+        document.getElementById('student-subject-select').addEventListener('change', renderStudentAttendance);
+
+        function init() {
+            // role
+            document.getElementById('current-user').innerText = state.currentUser.name;
+            renderSubjectSelectors();
+            renderStudents();
+            renderStudentSummary();
+            renderTeacherSummary();
+            renderAttendanceBySession();
+        }
+        init();
+
+        /* ---------------------------
+          Role switch
+        ----------------------------*/
+        function switchRole(role) {
+            state.role = role;
+            document.getElementById('role-student').classList.toggle('active', role === 'student');
+            document.getElementById('role-teacher').classList.toggle('active', role === 'teacher');
+            $('#student-dashboard').style.display = role === 'student' ? 'block' : 'none';
+            $('#teacher-dashboard').style.display = role === 'teacher' ? 'block' : 'none';
+            // change current user mimic
+            if (role === 'teacher') {
+                state.currentUser = { name: 'Teacher A', role: 'teacher', teacher_id: 201 };
+            } else {
+                state.currentUser = { name: 'Somchai', role: 'student', student_id: 101, fingerprint_id: state.students.find(s => s.student_id === 101).fingerprint_id || null };
+            }
+            document.getElementById('current-user').innerText = state.currentUser.name;
+            renderStudentSummary();
+            renderTeacherSummary();
+        }
+
+        /* ---------------------------
+          Subjects / Selects rendering
+        ----------------------------*/
+        function renderSubjectSelectors() {
+            const s1 = $('#student-subject-select'); s1.innerHTML = '';
+            const t1 = $('#teacher-subject-select'); t1.innerHTML = '<option value="">-- เลือกวิชา --</option>';
+            state.subjects.forEach(s => {
+                const o = document.createElement('option'); o.value = s.subject_id; o.textContent = s.subject_name;
+                s1.appendChild(o);
+                const o2 = o.cloneNode(true);
+                t1.appendChild(o2);
+            });
+            // also populate preview initially
+            const firstSub = state.subjects[0];
+            if (firstSub) {
+                $('#preview-subject').innerText = firstSub.subject_name;
+                $('#preview-time').innerText = 'No session';
+            }
+        }
+
+        /* ---------------------------
+          Student summary + attendance
+        ----------------------------*/
+        function renderStudentSummary() {
+            const student = state.students.find(s => s.student_id === state.currentUser.student_id) || state.students[0];
+            const fpStatusEl = $('#student-fp-status');
+            const fpIdEl = $('#student-fp-id');
+            if (student && student.fingerprint_id) {
+                fpStatusEl.innerHTML = '<span class="chip">Enrolled</span>';
+                fpIdEl.innerText = student.fingerprint_id;
+                state.currentUser.fingerprint_id = student.fingerprint_id;
+            } else {
+                fpStatusEl.innerHTML = '<span class="chip" style="background:#fff1f0;color:#7f1d1d">Not Enrolled</span>';
+                fpIdEl.innerText = '—';
+                state.currentUser.fingerprint_id = null;
+            }
+            // last attendance
+            const last = state.attendance.filter(a => a.student_id === student.student_id).sort((a, b) => new Date(b.time) - new Date(a.time))[0];
+            $('#student-last-att').innerText = last ? `${new Date(last.time).toLocaleString()} (${last.status})` : '-';
+            $('#student-today-count').innerText = state.sessions.filter(sess => isToday(sess.date)).length;
+            // populate subject list
+            const sselect = $('#student-subject-select');
+            if (sselect.options.length === 0) renderSubjectSelectors();
+            renderStudentAttendance();
+        }
+
+        /* ---------------------------
+          Render student attendance table
+        ----------------------------*/
+        function renderStudentAttendance() {
+            const sel = $('#student-subject-select').value;
+            const studentId = state.currentUser.student_id;
+            let html = '';
+            let rows = [];
+            if (!sel) {
+                html = '<div class="muted">เลือกวิชาจากเมนูด้านบนเพื่อดูประวัติ</div>';
+            } else {
+                const subjId = parseInt(sel);
+                // find sessions for subject
+                const sessions = state.sessions.filter(s => s.subject_id === subjId).sort((a, b) => new Date(b.date) - new Date(a.date));
+                if (sessions.length === 0) {
+                    html = '<div class="muted">ยังไม่มี session สำหรับวิชานี้</div>';
+                } else {
+                    html = `<table><thead><tr><th>วันที่</th><th>เวลา</th><th>สถานะ</th></tr></thead><tbody>`;
+                    sessions.forEach(sess => {
+                        const att = state.attendance.find(a => a.session_id === sess.session_id && a.student_id === studentId);
+                        const status = att ? att.status : 'Absent';
+                        html += `<tr><td>${sess.date}</td><td>${sess.start_time} - ${sess.end_time}</td><td>${status}</td></tr>`;
+                    });
+                    html += `</tbody></table>`;
+                }
+            }
+            $('#student-att-table').innerHTML = html;
+        }
+
+        /* ---------------------------
+          Students management (teacher)
+        ----------------------------*/
+        function renderStudents() {
+            const q = $('#student-search') ? $('#student-search').value.trim().toLowerCase() : '';
+            let rowsHtml = `<table><thead><tr><th>รหัส</th><th>ชื่อ</th><th>ห้อง</th><th>Fingerprint</th><th>Actions</th></tr></thead><tbody>`;
+            state.students.filter(s => !q || s.name.toLowerCase().includes(q)).forEach(s => {
+                rowsHtml += `<tr>
+      <td>${s.student_id}</td>
+      <td>${s.name}</td>
+      <td>${s.class}</td>
+      <td>${s.fingerprint_id ? '<span class="chip">ID ' + s.fingerprint_id + '</span>' : '<span class="muted">Not Registered</span>'}</td>
+      <td class="table-actions">
+        <button class="btn secondary" onclick="openEditStudent(${s.student_id})">Edit</button>
+        <button class="btn" onclick="enrollFingerprint(${s.student_id})">Enroll</button>
+        <button class="btn secondary" onclick="deleteStudent(${s.student_id})">Delete</button>
+      </td>
+    </tr>`;
+            });
+            rowsHtml += `</tbody></table>`;
+            $('#students-table').innerHTML = rowsHtml;
+            // update teacher totals
+            $('#teacher-total-students').innerText = state.students.length;
+        }
+
+        /* add/edit/delete student */
+        function openAddStudent() {
+            showModal(`<div class="flex-between"><h3>เพิ่มนักเรียน</h3><button onclick="closeModal()" class="btn secondary">Close</button></div>
+  <div style="margin-top:12px">
+    <div class="form-row"><input id="new-name" placeholder="ชื่อ–สกุล"></div>
+    <div class="form-row"><input id="new-class" placeholder="ห้อง เช่น ม.6/1"></div>
+    <div style="margin-top:12px;display:flex;gap:8px"><button class="btn" onclick="addStudent()">Save</button><button class="btn secondary" onclick="closeModal()">Cancel</button></div>
+  </div>`);
+        }
+        function addStudent() {
+            const name = $('#new-name').value.trim(); const cls = $('#new-class').value.trim();
+            if (!name) { alert('กรุณากรอกชื่อ'); return; }
+            const newId = Math.max(0, ...state.students.map(s => s.student_id)) + 1;
+            state.students.push({ student_id: newId, name, class: cls || '', fingerprint_id: null });
+            closeModal();
+            renderStudents();
+            renderSubjectSelectors();
+        }
+        function openEditStudent(id) {
+            const s = state.students.find(x => x.student_id === id);
+            showModal(`<div class="flex-between"><h3>แก้ไขนักเรียน</h3><button onclick="closeModal()" class="btn secondary">Close</button></div>
+  <div style="margin-top:12px">
+    <div class="form-row"><input id="edit-name" value="${s.name}"></div>
+    <div class="form-row"><input id="edit-class" value="${s.class}"></div>
+    <div style="margin-top:12px;display:flex;gap:8px"><button class="btn" onclick="saveEditStudent(${s.student_id})">Save</button><button class="btn secondary" onclick="closeModal()">Cancel</button></div>
+  </div>`);
+        }
+        function saveEditStudent(id) { const s = state.students.find(x => x.student_id === id); s.name = $('#edit-name').value.trim(); s.class = $('#edit-class').value.trim(); closeModal(); renderStudents(); }
+        function deleteStudent(id) { if (!confirm('ลบนักเรียนใช่ไหม?')) return; state.students = state.students.filter(s => s.student_id !== id); renderStudents(); renderStudentSummary(); }
+
+        /* ---------------------------
+          Enrollment (simulate) and fingerprint
+        ----------------------------*/
+        function enrollFingerprint(student_id) {
+            // simulate fingerprint scan and assign id
+            const newFp = Math.floor(Math.random() * 900) + 100; // random id 100-999
+            const s = state.students.find(x => x.student_id === student_id);
+            if (!s) return alert('ไม่พบข้อมูล');
+            s.fingerprint_id = newFp;
+            alert(`ลงทะเบียนสำเร็จ fingerprint_id = ${newFp} for ${s.name}`);
+            renderStudents(); renderStudentSummary();
+        }
+
+        /* ---------------------------
+          Sessions: create / render
+        ----------------------------*/
+        function openCreateSession() {
+            // show modal with select subject
+            const subjectOptions = state.subjects.map(s => `<option value="${s.subject_id}">${s.subject_name}</option>`).join('');
+            showModal(`<div class="flex-between"><h3>Create Session</h3><button onclick="closeModal()" class="btn secondary">Close</button></div>
+  <div style="margin-top:12px">
+    <div class="form-row"><select id="new-subject">${subjectOptions}</select></div>
+    <div class="form-row"><input id="new-date" type="date" /></div>
+    <div class="form-row"><input id="new-start" type="time" /> <input id="new-end" type="time" /></div>
+    <div style="margin-top:12px;display:flex;gap:8px"><button class="btn" onclick="createSession()">Create</button><button class="btn secondary" onclick="closeModal()">Cancel</button></div>
+  </div>`);
+        }
+        function createSession() {
+            const subj = parseInt($('#new-subject').value); const date = $('#new-date').value; const start = $('#new-start').value; const end = $('#new-end').value;
+            if (!subj || !date || !start) { alert('กรอกข้อมูลไม่ครบ'); return; }
+            state.lastSessionId++;
+            const sess = { session_id: state.lastSessionId, subject_id: subj, teacher_id: state.currentUser.teacher_id || 201, date, start_time: start, end_time: end || '' };
+            state.sessions.push(sess);
+            closeModal();
+            renderSubjectSelectors();
+            renderTeacherSummary();
+            renderAttendanceBySession();
+        }
+
+        /* ---------------------------
+          Attendance rendering (teacher)
+        ----------------------------*/
+        function renderAttendanceBySession() {
+            const subj = parseInt($('#teacher-subject-select').value) || null;
+            const sessSel = $('#teacher-session-select');
+            // populate sessions for subject
+            sessSel.innerHTML = '<option value="">-- เลือกรอบเรียน --</option>';
+            const sessions = subj ? state.sessions.filter(s => s.subject_id === subj) : state.sessions;
+            sessions.forEach(s => {
+                const opt = document.createElement('option'); opt.value = s.session_id; opt.textContent = `${s.date} ${s.start_time}`;
+                sessSel.appendChild(opt);
+            });
+            // if session chosen, render table
+            const chosen = parseInt(sessSel.value) || (sessions[0] ? sessions[0].session_id : null);
+            if (!chosen) {
+                $('#attendance-table').innerHTML = '<div class="muted">ยังไม่มี session ให้แสดง</div>';
+                return;
+            }
+            const rows = state.students.map(st => {
+                const att = state.attendance.find(a => a.session_id === chosen && a.student_id === st.student_id);
+                return `<tr>
+      <td>${st.student_id}</td>
+      <td>${st.name}</td>
+      <td>${att ? new Date(att.time).toLocaleTimeString() : '--'}</td>
+      <td>${att ? att.status : 'Absent'}</td>
+      <td>${att ? att.source_device : '-'}</td>
+    </tr>`;
+            }).join('');
+            $('#attendance-table').innerHTML = `<table><thead><tr><th>รหัส</th><th>ชื่อ</th><th>เวลา</th><th>สถานะ</th><th>device</th></tr></thead><tbody>${rows}</tbody></table>`;
+        }
+
+        /* ---------------------------
+          Simulate scan (teacher) and student scan
+        ----------------------------*/
+        function simulateScan() {
+            // choose random registered student to mark present for current/latest session
+            if (state.sessions.length === 0) { alert('ไม่มี session ใดๆ ให้ทดสอบ'); return; }
+            const latestSession = state.sessions[state.sessions.length - 1];
+            const registered = state.students.filter(s => s.fingerprint_id);
+            if (registered.length === 0) { alert('ยังไม่มีนักเรียนลงทะเบียนลายนิ้วมือ'); return; }
+            const chosen = registered[Math.floor(Math.random() * registered.length)];
+            // record attendance
+            state.lastAttendanceId++;
+            const timeNow = new Date().toISOString();
+            state.attendance.push({ attendance_id: state.lastAttendanceId, student_id: chosen.student_id, session_id: latestSession.session_id, time: timeNow, status: 'Present', source_device: 'MCU-01' });
+            alert(`Simulated: ${chosen.name} checked-in for session ${latestSession.session_id}`);
+            renderTeacherSummary();
+            renderAttendanceBySession();
+            renderStudentSummary();
+        }
+        function simulateStudentScan() {
+            // simulate current student (state.currentUser.student_id)
+            const student = state.students.find(s => s.student_id === state.currentUser.student_id);
+            if (!student) { alert('ไม่พบข้อมูลนักเรียน'); return; }
+            if (!state.sessions.length) { alert('ยังไม่มี session สร้างไว้'); return; }
+            if (!student.fingerprint_id) { alert('คุณยังไม่ได้ลงทะเบียนลายนิ้วมือ'); return; }
+            const latestSession = state.sessions[state.sessions.length - 1];
+            state.lastAttendanceId++;
+            state.attendance.push({ attendance_id: state.lastAttendanceId, student_id: student.student_id, session_id: latestSession.session_id, time: new Date().toISOString(), status: 'Present', source_device: 'MCU-01' });
+            alert('เช็กชื่อสำเร็จ (simulate)');
+            renderStudentSummary();
+            renderTeacherSummary();
+        }
+
+        /* ---------------------------
+          Teacher summary updates
+        ----------------------------*/
+        function renderTeacherSummary() {
+            const latest = state.sessions[state.sessions.length - 1];
+            $('#teacher-current-session').innerText = latest ? `${state.subjects.find(s => s.subject_id === latest.subject_id).subject_name} (${latest.date} ${latest.start_time})` : 'No session';
+            $('#preview-subject').innerText = latest ? state.subjects.find(s => s.subject_id === latest.subject_id).subject_name : '—';
+            $('#preview-time').innerText = latest ? `${latest.date} ${latest.start_time} - ${latest.end_time}` : '—';
+            $('#preview-status').innerText = latest ? 'Live' : 'Idle';
+            // present count for that session
+            if (latest) {
+                const count = state.attendance.filter(a => a.session_id === latest.session_id).length;
+                $('#teacher-present-count').innerText = count;
+            } else $('#teacher-present-count').innerText = 0;
+        }
+
+        /* ---------------------------
+          modal helpers
+        ----------------------------*/
+        function showModal(html) {
+            $('#modal').innerHTML = html;
+            $('#modal-backdrop').style.display = 'flex';
+        }
+        function closeModal() { $('#modal-backdrop').style.display = 'none'; $('#modal').innerHTML = ''; }
+
+        /* ---------------------------
+          Enrollment guide (simple)
+        ----------------------------*/
+        function showEnrollmentGuide() {
+            showModal(`<div class="flex-between"><h3>Enrollment Guide</h3><button onclick="closeModal()" class="btn secondary">Close</button></div>
+    <div style="margin-top:12px">
+      <ol>
+        <li>เลือกนักเรียนที่ต้องการลงทะเบียนจากหน้า Manage Students</li>
+        <li>คลิกปุ่ม <strong>Enroll</strong> เพื่อทำการจำลองการสแกน</li>
+        <li>ระบบจะสร้าง fingerprint_id แบบสุ่มและผูกกับนักเรียน</li>
+        <li>หลังจากลงทะเบียน นักเรียนสามารถสแกนเช็กชื่อได้ (simulate)</li>
+      </ol>
+      <p class="muted">เมื่อเชื่อม ESP32 จริง ให้ ESP32 ส่ง POST /api/attendance กับ payload ที่มี fingerprint_id และ session_id</p>
+    </div>`);
+        }
+
+        /* ---------------------------
+          Utils
+        ----------------------------*/
+        function isToday(dateStr) {
+            if (!dateStr) return false;
+            const d = new Date(dateStr);
+            const now = new Date();
+            return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate();
+        }
+
+        /* init: populate teacher session select when subjects changed */
+        $('#teacher-subject-select').addEventListener('change', () => {
+            // clear session select
+            $('#teacher-session-select').innerHTML = '<option value="">-- เลือกรอบเรียน --</option>';
+        });
+
+        /* close modal on backdrop click */
+        $('#modal-backdrop').addEventListener('click', (e) => {
+            if (e.target.id === 'modal-backdrop') closeModal();
+        });
+
+    </script>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+// auth.js (client-side)
+const API_BASE = '/api'; // เพราะเราจะให้ Express serve ทั้ง frontend + backend
+
+const $ = id => document.getElementById(id);
+
+function switchTab(tab) {
+    if (tab === 'login') {
+        $('tab-login').classList.add('active');
+        $('tab-register').classList.remove('active');
+        $('login-form').style.display = 'block';
+        $('register-form').style.display = 'none';
+    } else {
+        $('tab-register').classList.add('active');
+        $('tab-login').classList.remove('active');
+        $('login-form').style.display = 'none';
+        $('register-form').style.display = 'block';
+    }
+}
+
+$('tab-login').addEventListener('click', () => switchTab('login'));
+$('tab-register').addEventListener('click', () => switchTab('register'));
+
+$('btn-register').addEventListener('click', async () => {
+    $('reg-msg').innerText = '';
+    const payload = {
+        name: $('reg-name').value.trim(),
+        username: $('reg-username').value.trim(),
+        email: $('reg-email').value.trim(),
+        password: $('reg-password').value,
+        role: $('reg-role').value,
+        student_code: $('reg-studentid').value.trim() || null
+    };
+    try {
+        const res = await fetch(`${API_BASE}/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const j = await res.json();
+        if (!res.ok) {
+            $('reg-msg').innerText = j.error || 'register failed';
+            return;
+        }
+        // save token & go to dashboard (index.html)
+        localStorage.setItem('fa_token', j.token);
+        localStorage.setItem('fa_user', JSON.stringify(j.user));
+        alert('สมัครสำเร็จ กำลังไป Dashboard');
+        window.location.href = '/'; // index.html (ถ้ามี)
+    } catch (e) {
+        console.error(e);
+        $('reg-msg').innerText = 'เกิดข้อผิดพลาด';
+    }
+});
+
+$('btn-login').addEventListener('click', async () => {
+    $('login-msg').innerText = '';
+    const payload = {
+        usernameOrEmail: $('login-email').value.trim(),
+        password: $('login-password').value
+    };
+    try {
+        const res = await fetch(`${API_BASE}/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const j = await res.json();
+        if (!res.ok) {
+            $('login-msg').innerText = j.error || 'login failed';
+            return;
+        }
+        localStorage.setItem('fa_token', j.token);
+        localStorage.setItem('fa_user', JSON.stringify(j.user));
+        alert('ล็อกอินสำเร็จ กำลังไป Dashboard');
+        window.location.href = '/';
+    } catch (e) {
+        console.error(e);
+        $('login-msg').innerText = 'เกิดข้อผิดพลาด';
+    }
+});
