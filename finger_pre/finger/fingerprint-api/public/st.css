@@ -1,0 +1,124 @@
+.student-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+.student-table th {
+  background: #f5f7f9;
+  text-align: left;
+  padding: 12px;
+  font-weight: 600;
+}
+
+.student-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.student-table tr:hover {
+  background: #fafafa;
+}
+
+/* badges */
+.badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+}
+
+.badge-green {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.badge-gray {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+/* buttons */
+.btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-primary { background: #047857; color: white; }
+.btn-secondary { background: #e5e7eb; }
+.btn-light { background: #f3f4f6; }
+.btn-success { background: #059669; color: white; }
+.btn-danger { background: #dc2626; color: white; }
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-bar {
+  display: flex;
+  gap: 12px;/* ===============================
+   Manage Students Page Only
+================================ */
+.manage-page h3 {
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+/* ตาราง */
+.manage-page table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+
+.manage-page th {
+  background: #f0fdfa;
+  padding: 12px;
+  font-weight: 700;
+  border-bottom: 2px solid #d1fae5;
+}
+
+.manage-page td {
+  padding: 12px;
+  border-bottom: 1px solid #eef2f2;
+  vertical-align: middle;
+}
+
+.manage-page tr:hover {
+  background: #f9fafb;
+}
+
+/* Fingerprint badge */
+.manage-page .fp-ok {
+  background: #d1fae5;
+  color: #065f46;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.manage-page .fp-none {
+  background: #e5e7eb;
+  color: #374151;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+/* Actions */
+.manage-page .table-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.manage-page .table-actions .btn {
+  padding: 6px 14px;
+  font-size: 13px;
+}
+
+  margin-top: 12px;
+}

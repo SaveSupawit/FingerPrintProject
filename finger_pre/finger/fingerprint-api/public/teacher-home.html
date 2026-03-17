@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="th">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Fingerprint Attendance - Teacher Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body style="background-color: #f4f5f7;">
+    <header>
+        <div class="brand">
+            <div class="logo">FA</div>
+            <div>
+                <h1>Fingerprint Attendance System</h1>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <span id="user-display" class="muted"></span>
+            <button class="btn secondary" id="btn-logout">Logout</button>
+        </div>
+    </header>
+
+
+    <main style="max-width: 800px; margin: 40px auto;">
+        <h2 id="greeting-title" style="margin-bottom: 20px; color: #1e293b; font-size: 24px;">Hi, Loading...</h2>
+
+        <!-- Profile Box -->
+        <div class="card"
+            style="margin-bottom: 20px; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0; background: #fff;">
+            <div style="font-weight: 500; margin-bottom: 12px; color: #334155;">Teacher Profile</div>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div id="profile-initials"
+                    style="width: 40px; height: 40px; border-radius: 50%; background: #e2e8f0; color: #475569; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 16px;">
+                </div>
+                <div>
+                    <div id="profile-name" style="font-weight: 700; font-size: 18px; color: #0f172a;"></div>
+                    <div id="profile-email" style="color: #3b82f6; font-size: 14px; margin-top: 4px;">Email: </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Subject Box -->
+        <div class="card"
+            style="margin-bottom: 20px; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0; background: #fff; display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-weight: 500; color: #334155;">Manage Your Courses</div>
+            <button class="btn" onclick="openAddSubject()"
+                style="background-color: #f97316; border: none; font-weight: bold;">+ Create New Subject</button>
+        </div>
+
+        <!-- Created Courses Box -->
+        <div class="card" style="padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0; background: #fff;">
+            <div style="font-weight: 500; margin-bottom: 20px; color: #334155;">My Subjects</div>
+            <div id="teacher-my-courses-container" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div class="muted">Loading your courses...</div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- modal -->
+    <div class="modal-backdrop" id="modal-backdrop">
+        <div class="modal" id="modal"></div>
+    </div>
+
+    <script src="teacher-home.js"></script>
+</body>
+
+</html>

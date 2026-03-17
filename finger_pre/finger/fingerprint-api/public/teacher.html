@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="th">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Teacher Dashboard - Fingerprint Attendance</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="brand">
+            <div class="logo">FA</div>
+            <div>
+                <h1>Fingerprint Attendance System</h1>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <span id="user-display" class="muted"></span>
+            <button class="btn secondary" id="btn-logout">Logout</button>
+        </div>
+    </header>
+    <main>
+        <div class="grid">
+            <!-- left/main column -->
+            <div>
+                <!-- Teacher Dashboard -->
+                <section id="teacher-dashboard" class="card" aria-labelledby="teacher-title">
+                    <div class="row head">
+                        <div>
+                            <h2 id="teacher-title">Course Detail: <span id="display-subject-name"
+                                    style="color:#3b82f6;">Loading...</span></h2>
+                            <small class="muted">Manage attendance and students for this specific course</small>
+                        </div>
+                        <div class="row actions">
+                            <button class="btn"
+                                style="background: transparent; color: #475569; border: 1px solid #cbd5e1; padding: 6px 12px; font-size: 14px; border-radius: 4px; cursor: pointer;"
+                                onclick="window.location.href='teacher-home.html'">← Back to Dashboard</button>
+                            <button class="btn" onclick="openStartScan()">Start scan</button>
+                            <button class="btn"
+                                onclick="location.href='Manage.html?subject_id=' + new URLSearchParams(window.location.search).get('subject_id')">Manage
+                                Students</button>
+                            <button class="btn secondary" onclick="openScanModal()">Scan</button>
+                        </div>
+                    </div>
+
+                    <section id="live-dashboard" class="card" style="margin-top:20px;">
+                        <div class="row head" style="margin-bottom:12px; justify-content: space-between;">
+                            <h3 style="margin:0; display:flex; align-items:center; gap:8px;">
+                                📊 Live Attendance
+                            </h3>
+                            <button id="btn-stop-class" class="btn danger"
+                                style="padding: 6px 16px; font-size: 14px; display: none;" onclick="stopScan()">End
+                                Class</button>
+                        </div>
+
+                        <div id="live-status-bar" class="status-bar idle">
+                            ไม่มีคาบเรียนที่กำลัง Live อยู่ในขณะนี้
+                        </div>
+
+                        <div class="live-stats">
+                            <div class="stat-item">
+                                <div class="label">ทั้งหมด</div>
+                                <div class="val" id="live-total">-</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="label">มาตรงเวลา</div>
+                                <div class="val" id="live-ontime">-</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="label">มาสาย</div>
+                                <div class="val" id="live-late">-</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="label">ขาดเรียน</div>
+                                <div class="val" id="live-absent">-</div>
+                            </div>
+                        </div>
+
+                        <div id="live-content" class="live-content empty">
+                            <div style="font-size: 40px;">💤</div>
+                            <p class="muted">ไม่ได้เริ่มคาบเรียน</p>
+                            <button class="btn" onclick="openStartScan()">▶ เริ่มคาบเรียนใหม่</button>
+                        </div>
+
+                        <!-- Live Table Container -->
+                        <div id="live-attendance-table" style="margin-top: 20px; display: none;"></div>
+                    </section>
+
+
+
+                    <div class="panel">
+                        <h3>Attendance History</h3>
+                        <div class="form-row">
+                            <select id="teacher-subject-select" onchange="renderAttendanceBySession()"
+                                style="display:none;"></select>
+                            <select id="teacher-session-select"></select>
+                            <button class="btn secondary" onclick="filterAttendance()">Filter</button>
+                        </div>
+                        <div id="attendance-table"></div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- right column -->
+            <aside class="right-col">
+
+
+                <!-- QUICK ACTIONS (teacher only) -->
+                <div id="teacher-quick-actions" class="card">
+                    <h3>Quick Actions</h3>
+                    <div style="display:flex;flex-direction:column;gap:8px">
+                        <button class="btn" onclick="openCreateSession()">Create Session</button>
+                        <button class="btn" onclick="openAddStudent()">Add Student</button>
+                        <button class="btn secondary" onclick="showEnrollmentGuide()">Enrollment Guide</button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- modal -->
+    <div class="modal-backdrop" id="modal-backdrop">
+        <div class="modal" id="modal"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

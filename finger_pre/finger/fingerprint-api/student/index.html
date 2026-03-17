@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="th">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Fingerprint Attendance Prototype</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="brand">
+            <div class="logo">FA</div>
+            <div>
+                <h1>Fingerprint Attendance System</h1>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <div class="role-switch">
+                <span id="user-display"
+                    style="font-weight:600; font-size:14px; margin-right:8px; color:#374151;"></span>
+                <button id="btn-logout" class="btn secondary" style="font-size:12px;">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="grid">
+            <div class="card" style="border-left: 4px solid var(--accent);">
+                <h2>Student Dashboard</h2>
+                <div class="muted small">สรุปการเข้าเรียนและสถานะลายนิ้วมือของคุณ</div>
+
+                <!-- 🔴 Live Session (ถ้ามี) -->
+                <div id="student-live-session-container" style="margin-top:20px;">
+                    <!-- Will be populated by JS -->
+                    <div class="muted">Loading live session status...</div>
+                </div>
+
+                <div class="top-summary" style="margin-top:20px;">
+                    <div class="stat stat-today">
+                        <div class="muted small">วันนี้เรียน</div>
+                        <div class="big" id="student-today-count">-</div>
+                        <div class="small">คาบ</div>
+                    </div>
+                    <div class="stat stat-latest">
+                        <!-- Use innerHTML to render table-like structure -->
+                        <div id="student-last-att">
+                            <div class="muted small">เช็กชื่อล่าสุด</div>
+                            <div>-</div>
+                        </div>
+                    </div>
+                    <div class="stat stat-status">
+                        <div class="muted small">Fingerprint Status</div>
+                        <div style="font-weight:700; margin:6px 0;" id="student-fp-status">-</div>
+                        <div class="small muted">Fingerprint ID: <span id="student-fp-id">—</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Attendance by Subject</h3>
+                <div class="row" style="margin-bottom:12px;">
+                    <select id="stu-subject-select">
+                        <option value="">-- วิชาเรียน --</option>
+                    </select>
+
+                    <select id="stu-session-select">
+                        <option value="">-- ทุกรอบเรียน --</option>
+                    </select>
+
+                    <button class="btn" onclick="filterStudentAttendance()">Filter</button>
+                </div>
+
+                <div id="student-attendance-result">
+                    <div class="muted">กรุณาเลือกวิชาเพื่อดูเวลาเรียน</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal (Optional) -->
+    <div class="modal-backdrop" id="modal-backdrop">
+        <div class="modal" id="modal"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

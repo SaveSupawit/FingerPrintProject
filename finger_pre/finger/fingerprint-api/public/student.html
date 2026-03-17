@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="th">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Fingerprint Attendance Prototype</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="brand">
+            <div class="logo">FA</div>
+            <div>
+                <h1>Fingerprint Attendance System</h1>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <span id="user-display" class="muted"></span>
+            <button class="btn secondary" id="btn-logout">Logout</button>
+        </div>
+    </header>
+
+
+    <main>
+
+        <div class="grid">
+            <!-- left/main column -->
+            <div>
+                <!-- Student Dashboard -->
+                <section id="student-dashboard" class="card" aria-labelledby="student-title">
+                    <div class="row head">
+                        <div>
+                            <h2 id="student-title">Student Dashboard</h2>
+                            <small class="muted">สรุปการเข้าเรียนและสถานะลายนิ้วมือของคุณ</small>
+                        </div>
+                        <div class="row actions">
+
+                        </div>
+                    </div>
+
+                    <!-- NEW: Live Session Section -->
+                    <div id="student-live-session-container" style="margin-bottom: 20px;">
+                        <!-- Will be populated by app2.js -->
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <button class="btn"
+                            style="background: transparent; color: #475569; border: 1px solid #cbd5e1; padding: 6px 12px; font-size: 14px; border-radius: 4px; cursor: pointer;"
+                            onclick="window.location.href='student-home.html'">← Back to Dashboard</button>
+                    </div>
+
+                    <div class="top-summary">
+                        <div class="stat stat-today">
+                            <div class="muted">วันนี้เรียน</div>
+                            <div class="big" id="student-today-count">0</div>
+                            <div class="muted">คาบ</div>
+                        </div>
+                        <div class="stat stat-latest">
+                            <div class="muted">เช็กชื่อล่าสุด</div>
+                            <div id="student-last-att"></div>
+                            <div class="muted">เวลา: </div>
+                        </div>
+                        <div class="stat stat-status">
+                            <div class="muted">Fingerprint Status</div>
+                            <div id="student-fp-status"><span class="chip danger">Not Enrolled</span></div>
+                            <div class="muted">Fingerprint ID: <span id="student-fp-id">—</span></div>
+                        </div>
+                    </div>
+
+                    <h3 id="attendance-section">Attendance History: <span id="display-subject-name"
+                            style="color: #3b82f6;">Loading...</span></h3>
+
+                    <div class="row" style="gap:10px; margin-bottom:10px; display: none;">
+                        <select id="stu-subject-select">
+                            <option value="">-- วิชาเรียน --</option>
+                        </select>
+                    </div>
+
+                    <div class="row" style="gap:10px; margin-bottom:10px">
+                        <select id="stu-session-select">
+                            <option value="">-- ทุกรอบเรียน --</option>
+                        </select>
+
+
+
+                        <button class="btn" onclick="filterStudentAttendance()">Filter</button>
+                    </div>
+
+                    <div id="student-attendance-result"></div>
+
+                </section>
+
+                </section>
+            </div>
+
+            <!-- right column -->
+            <aside class="right-col">
+
+
+
+            </aside>
+        </div>
+    </main>
+
+    <!-- modal -->
+    <div class="modal-backdrop" id="modal-backdrop">
+        <div class="modal" id="modal"></div>
+    </div>
+
+    <script src="student-dashboard.js"></script>
+</body>
+
+</html>

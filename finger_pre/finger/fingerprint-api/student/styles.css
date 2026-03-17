@@ -1,0 +1,527 @@
+:root {
+    --accent: #9ad7d1;
+    --panel: #e5f7f3;
+    --text: #052926;
+    --muted: #475569;
+    --success: #047857;
+    --danger: #dc2626;
+    font-family: "Noto Sans Thai", "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box
+}
+
+body {
+    margin: 0;
+    background: #FFFFFF;
+    color: var(--text);
+    line-height: 1.45
+}
+
+header {
+    background: #ffffffcc;
+    backdrop-filter: blur(4px);
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e6eef0
+}
+
+.brand {
+    display: flex;
+    gap: 12px;
+    align-items: center
+}
+
+.logo {
+    width: 46px;
+    height: 46px;
+    border-radius: 8px;
+    background: var(--accent);
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    color: #00302b
+}
+
+.brand h1 {
+    font-size: 18px;
+    margin: 0
+}
+
+.header-right {
+    display: flex;
+    gap: 12px;
+    align-items: center
+}
+
+.role-switch {
+    display: flex;
+    gap: 8px
+}
+
+.role-btn {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    background: transparent;
+    cursor: pointer
+}
+
+.role-btn.active {
+    background: var(--accent);
+    color: #00302b;
+    font-weight: 700
+}
+
+main {
+    padding: 18px;
+    max-width: 1200px;
+    margin: 18px auto
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px
+}
+
+.card {
+    background: white;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 6px 18px rgba(10, 20, 30, 0.06)
+}
+
+.panel {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.85));
+    padding: 18px;
+    border-radius: 8px
+}
+
+.top-summary {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap
+}
+
+.stat {
+    flex: 1;
+    min-width: 160px;
+    background: #ffffff;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #e6eef0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+}
+
+.stat-today {
+    background: #EAF4FF;
+    border: 1px solid #D6E8FF;
+}
+
+.stat-latest {
+    background: #F1EEFF;
+    border: 1px solid #DDD6FE;
+}
+
+.stat-status {
+    background: #E9F8F1;
+    border: 1px solid #BBF7D0;
+}
+
+h2 {
+    margin: 0 0 8px 0;
+    font-size: 16px
+}
+
+.small {
+    font-size: 13px
+}
+
+.muted {
+    color: var(--muted)
+}
+
+.btn {
+    background: var(--success);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer
+}
+
+.btn.secondary {
+    background: #eef2f2;
+    color: var(--text)
+}
+
+.btn.danger {
+    background: var(--danger);
+    color: white
+}
+
+.row {
+    display: flex;
+    gap: 12px;
+    align-items: center
+}
+
+.form-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px
+}
+
+input,
+select {
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #e3eef0
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px
+}
+
+th,
+td {
+    padding: 8px;
+    border-bottom: 1px solid #eef3f4;
+    text-align: left;
+    font-size: 14px
+}
+
+.chip {
+    display: inline-block;
+    padding: 6px 8px;
+    border-radius: 999px;
+    background: #f1faf7;
+    color: #044b3f;
+    font-weight: 600;
+    font-size: 13px
+}
+
+.danger {
+    color: var(--danger);
+    font-weight: 700
+}
+
+.chip-green {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.chip-yellow {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.chip.danger {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.right-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px
+}
+
+.session-card {
+    background: linear-gradient(135deg, #dff3ef, #f2fffc);
+    padding: 12px;
+    border-radius: 10px
+}
+
+.center-banner {
+    height: 180px;
+    border-radius: 10px;
+    background-image: url('/mnt/data/bdef4325-72eb-42ba-a2a0-9cde3f7414a7.png');
+    background-size: cover;
+    background-position: center;
+    box-shadow: inset 0 -40px 80px rgba(0, 0, 0, 0.12)
+}
+
+.bold {
+    font-weight: 700
+}
+
+.big {
+    font-weight: 700;
+    font-size: 20px
+}
+
+@media (max-width:980px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .right-col {
+        order: -1
+    }
+
+    .center-banner {
+        height: 160px
+    }
+}
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(3, 7, 7, 0.45);
+    display: none;
+    align-items: center;
+    justify-content: center
+}
+
+.modal {
+    background: white;
+    padding: 18px;
+    border-radius: 12px;
+    max-width: 560px;
+    width: 100%
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center
+}
+
+.text-muted {
+    color: var(--muted)
+}
+
+.table-actions button {
+    margin-right: 6px
+}
+
+/* ===============================
+   Manage Students Page Only
+================================ */
+.manage-page h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+}
+
+/* ตาราง */
+.manage-page table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+}
+
+.manage-page th {
+    background: #f0fdfa;
+    padding: 12px;
+    font-weight: 700;
+    border-bottom: 2px solid #d1fae5;
+}
+
+.manage-page td {
+    padding: 12px;
+    border-bottom: 1px solid #eef2f2;
+    vertical-align: middle;
+}
+
+.manage-page tr:hover {
+    background: #f9fafb;
+}
+
+/* Fingerprint badge */
+.manage-page .fp-ok {
+    background: #d1fae5;
+    color: #065f46;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.manage-page .fp-none {
+    background: #e5e7eb;
+    color: #374151;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+}
+
+/* Actions */
+.manage-page .table-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.manage-page .table-actions .btn {
+    padding: 6px 14px;
+    font-size: 13px;
+}
+
+.manage-page .panel:last-child {
+    text-align: right;
+}
+
+
+.att-status {
+    font-weight: 700;
+    margin-left: 6px;
+}
+
+.att-status.present {
+    color: #047857;
+}
+
+.att-status.late {
+    color: #b45309;
+}
+
+.att-status.absent {
+    color: #b91c1c;
+}
+
+/* =====================================================
+   Live Attendance Dashboard
+===================================================== */
+#live-dashboard {
+    background: white;
+    min-height: 250px;
+    /* Ensure some height consistency */
+}
+
+/* Status Bar (Gray box "No class live") */
+.status-bar {
+    background: #f1f5f9;
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: #475569;
+    font-size: 15px;
+    margin-bottom: 24px;
+}
+
+/* Live Stats Grid */
+/* Live Stats Grid */
+.live-stats {
+    display: flex;
+    gap: 16px;
+    /* Space between cards */
+    margin-bottom: 30px;
+    padding: 0;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex: 1;
+    padding: 16px;
+    border-radius: 12px;
+    transition: transform 0.2s;
+}
+
+.stat-item:hover {
+    transform: translateY(-2px);
+}
+
+.stat-item .label {
+    font-size: 14px;
+    margin-bottom: 4px;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+.stat-item .val {
+    font-size: 24px;
+    font-weight: 700;
+    min-height: 32px;
+}
+
+/* 1. Total (Light Blue) */
+.live-stats .stat-item:nth-child(1) {
+    background-color: #e0f2fe;
+    color: #0369a1;
+}
+
+.live-stats .stat-item:nth-child(1) .label {
+    color: #0c4a6e;
+}
+
+/* 2. On Time (Green) */
+.live-stats .stat-item:nth-child(2) {
+    background-color: #d1fae5;
+    color: #047857;
+}
+
+.live-stats .stat-item:nth-child(2) .label {
+    color: #064e3b;
+}
+
+/* 3. Late (Orange/Amber) */
+.live-stats .stat-item:nth-child(3) {
+    background-color: #ffedd5;
+    color: #c2410c;
+}
+
+.live-stats .stat-item:nth-child(3) .label {
+    color: #7c2d12;
+}
+
+/* 4. Absent (Gray/Slate) */
+.live-stats .stat-item:nth-child(4) {
+    background-color: #f1f5f9;
+    color: #475569;
+}
+
+.live-stats .stat-item:nth-child(4) .label {
+    color: #334155;
+}
+
+
+/* Empty/Idle State Centered Content */
+.live-content.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.live-content.empty div {
+    /* The Zzz icon container */
+    margin-bottom: 12px;
+}
+
+.live-content.empty p.muted {
+    margin: 0 0 24px 0;
+    font-size: 16px;
+    color: #94a3b8;
+    /* Lighter text for "Not started" */
+}
+
+/* Big Green Start Button */
+.live-content .btn {
+    background: #047857;
+    /* Darker green matches design */
+    color: white;
+    border-radius: 6px;
+    padding: 10px 24px;
+    font-size: 15px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background 0.2s;
+}
+
+.live-content .btn:hover {
+    background: #065f46;
+}

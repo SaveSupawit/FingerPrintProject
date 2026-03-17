@@ -1,0 +1,363 @@
+MySQL passs 
+root1234
+
+npx nodemon server.js
+
+http://localhost:3000
+
+
+
+
+
+
+students: [
+        { student_id: 101, name: 'Somchai', class: 'ม.6/1', fingerprint_id: null },
+        { student_id: 102, name: 'Mali', class: 'ม.6/2', fingerprint_id: 7 },
+        { student_id: 103, name: 'Rungnapha', class: 'ม.6/3', fingerprint_id: 12 }
+    ],
+    teachers: [
+        { teacher_id: 201, name: 'Teacher A' }
+    ],
+    subjects: [
+        { subject_id: 1, subject_name: 'Mathematics', teacher_id: 201 },
+        { subject_id: 2, subject_name: 'Physics', teacher_id: 201 }
+    ],
+
+
+
+
+
+
+
+
+
+
+
+
+
+'4', 'nubkgern', 'napkgern2543@gmail.com', '$2b$10$vxIsyGZ2JjKi.PJy9ty/C.Vbd4JTfVD3Ny8xfXId/ZPsJo/mMh5aq', 'student', '2025-12-02 04:07:17'
+
+
+<!doctype html>
+<html lang="th">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Login / Register - Fingerprint Attendance</title>
+    <style>
+        :root {
+            --accent: #9ad7d1;
+            --bg: #f3f6f7;
+            --card: #fff;
+            --muted: #64748b;
+            --success: #047857;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Noto Sans Thai", Roboto, Arial, sans-serif;
+            background: var(--bg);
+            display: grid;
+            place-items: center;
+            height: 100vh
+        }
+
+        .wrap {
+            width: 980px;
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 28px;
+            align-items: center
+        }
+
+        .hero {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 28px;
+            box-shadow: 0 8px 24px rgba(10, 20, 30, 0.06)
+        }
+
+        .hero h1 {
+            margin: 0 0 8px 0
+        }
+
+        .hero p {
+            color: var(--muted);
+            margin: 0 0 18px 0
+        }
+
+        .hero img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 12px
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 24px rgba(10, 20, 30, 0.06)
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px
+        }
+
+        .tab {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid #e6eef0;
+            background: #fff
+        }
+
+        .tab.active {
+            background: var(--accent);
+            color: #00302b;
+            font-weight: 700
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 10px
+        }
+
+        label {
+            font-size: 13px;
+            color: var(--muted)
+        }
+
+        input,
+        select {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #e6eef0;
+            font-size: 14px
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            background: var(--success);
+            color: white;
+            font-weight: 700;
+            cursor: pointer
+        }
+
+        .btn.secondary {
+            background: #eef2f2;
+            color: #02302b
+        }
+
+        .small {
+            font-size: 13px;
+            color: var(--muted);
+            text-align: center;
+            margin-top: 8px
+        }
+
+        .hint {
+            font-size: 13px;
+            color: #b91c1c
+        }
+
+        .center {
+            display: grid;
+            place-items: center
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="wrap">
+        <!-- left: hero / info -->
+        <div class="hero">
+            <h1>Fingerprint Attendance System</h1>
+            <p>ตัวอย่างสำหรับโปรเจกต์ — ลงชื่อเข้าใช้หรือสมัครเพื่อทดลองใช้งาน</p>
+            <!-- ตัวอย่างภาพจากไฟล์ที่อัปโหลด -->
+            <img src="Classroom.jpg" alt="classroom preview">
+
+        </div>
+
+        <!-- right: auth card -->
+        <div class="card" id="auth-card">
+            <div class="tabs">
+                <div class="tab active" id="tab-login">Login</div>
+                <div class="tab" id="tab-register">Register</div>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <div id="login-form">
+                <div class="form-row">
+                    <label for="login-email">อีเมล / Username</label>
+                    <input id="login-email" placeholder="example@school.com or username">
+                </div>
+                <div class="form-row">
+                    <label for="login-password">รหัสผ่าน</label>
+                    <input id="login-password" type="password" placeholder="password">
+                </div>
+                <div class="form-row center">
+                    <button class="btn" onclick="doLogin()">เข้าสู่ระบบ</button>
+                </div>
+                <div class="small">ยังไม่มีบัญชี? คลิก Register</div>
+                <div id="login-msg" class="hint"></div>
+            </div>
+
+            <!-- REGISTER FORM (hidden) -->
+            <div id="register-form" style="display:none">
+                <div class="form-row">
+                    <label for="reg-name">ชื่อ–สกุล</label>
+                    <input id="reg-name" placeholder="ชื่อ–สกุล">
+                </div>
+                <div class="form-row">
+                    <label for="reg-username">Username (ใช้งานลงชื่อเข้าใช้)</label>
+                    <input id="reg-username" placeholder="somchai">
+                </div>
+                <div class="form-row">
+                    <label for="reg-email">อีเมล</label>
+                    <input id="reg-email" placeholder="example@school.com">
+                </div>
+                <div class="form-row">
+                    <label for="reg-password">รหัสผ่าน</label>
+                    <input id="reg-password" type="password" placeholder="password">
+                </div>
+                <div class="form-row">
+                    <label for="reg-role">บทบาท</label>
+                    <select id="reg-role">
+                        <option value="student">Student</option>
+                        <option value="teacher">Teacher</option>
+                    </select>
+                </div>
+                <div class="form-row" id="student-fields">
+                    <label for="reg-studentid">รหัสนักเรียน (ถ้าเป็น Student)</label>
+                    <input id="reg-studentid" placeholder="เช่น 101">
+                </div>
+                <div class="form-row center">
+                    <button class="btn" onclick="doRegister()">สมัคร</button>
+                </div>
+                <div class="small">มีบัญชีแล้ว? คลิก Login</div>
+                <div id="reg-msg" class="hint"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ---------- utility ---------- */
+        const $ = id => document.getElementById(id);
+
+        /* ---------- tabs ---------- */
+        $('tab-login').addEventListener('click', () => {
+            $('tab-login').classList.add('active');
+            $('tab-register').classList.remove('active');
+            $('login-form').style.display = 'block';
+            $('register-form').style.display = 'none';
+        });
+        $('tab-register').addEventListener('click', () => {
+            $('tab-register').classList.add('active');
+            $('tab-login').classList.remove('active');
+            $('login-form').style.display = 'none';
+            $('register-form').style.display = 'block';
+        });
+
+        /* ---------- localStorage helpers ---------- */
+        function getUsers() {
+            try {
+                const raw = localStorage.getItem('fa_users');
+                return raw ? JSON.parse(raw) : [];
+            } catch (e) { return []; }
+        }
+        function saveUsers(list) {
+            localStorage.setItem('fa_users', JSON.stringify(list));
+        }
+        function setCurrentUser(u) {
+            localStorage.setItem('fa_currentUser', JSON.stringify(u));
+        }
+
+        /* ---------- Register ---------- */
+        function doRegister() {
+            const name = $('reg-name').value.trim();
+            const username = $('reg-username').value.trim();
+            const email = $('reg-email').value.trim();
+            const pass = $('reg-password').value;
+            const role = $('reg-role').value;
+            const student_id = $('reg-studentid').value.trim() || null;
+
+            $('reg-msg').innerText = '';
+
+            if (!username || !pass || !name) {
+                $('reg-msg').innerText = 'กรุณากรอก username, password และชื่อ';
+                return;
+            }
+
+            const users = getUsers();
+            if (users.find(u => u.username === username || (u.email && u.email === email))) {
+                $('reg-msg').innerText = 'มี username หรือ email นี้แล้ว';
+                return;
+            }
+
+            // create user object
+            const newUser = {
+                id: Math.max(0, ...users.map(u => u.id || 0)) + 1,
+                name, username, email, password: pass,
+                role, student_id: role === 'student' ? (student_id || null) : null,
+                fingerprint_id: null
+            };
+
+            users.push(newUser);
+            saveUsers(users);
+            setCurrentUser({ id: newUser.id, name: newUser.name, role: newUser.role, username: newUser.username, student_id: newUser.student_id });
+            // redirect to main app
+            alert('สมัครสำเร็จ! กำลังเข้าสู่ระบบ...');
+            window.location.href = 'index.html';
+        }
+
+        /* ---------- Login ---------- */
+        function doLogin() {
+            const userInput = $('login-email').value.trim();
+            const pass = $('login-password').value;
+            $('login-msg').innerText = '';
+
+            if (!userInput || !pass) { $('login-msg').innerText = 'กรุณากรอกข้อมูลให้ครบ'; return; }
+
+            const users = getUsers();
+            const user = users.find(u => (u.username && u.username === userInput) || (u.email && u.email === userInput));
+            if (!user || user.password !== pass) {
+                $('login-msg').innerText = 'ไม่พบผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
+                return;
+            }
+
+            // set current user and redirect
+            setCurrentUser({ id: user.id, name: user.name, role: user.role, username: user.username, student_id: user.student_id, fingerprint_id: user.fingerprint_id });
+            alert('ล็อกอินสำเร็จ! กำลังไปที่หน้า Dashboard...');
+            window.location.href = 'index.html';
+        }
+
+        /* ---------- auto-create a demo teacher + student (only if no users) ---------- */
+        (function seedDemo() {
+            const u = getUsers();
+            if (u.length === 0) {
+                const demo = [
+                    { id: 1, name: 'Teacher A', username: 'teacher', email: 'teacher@school', password: 'pass', role: 'teacher', student_id: null, fingerprint_id: null },
+                    { id: 2, name: 'Somchai', username: 'somchai', email: 'somchai@school', password: 'pass', role: 'student', student_id: '101', fingerprint_id: null },
+                    { id: 3, name: 'Mali', username: 'mali', email: 'mali@school', password: 'pass', role: 'student', student_id: '102', fingerprint_id: 7 }
+                ];
+                saveUsers(demo);
+            }
+        })();
+    </script>
+
+</body>
+
+</html>
